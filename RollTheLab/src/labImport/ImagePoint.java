@@ -2,7 +2,6 @@ package labImport;
 
 public class ImagePoint {
 	
-	&
 	public ImagePoint(int x, int y) {
 		super();
 		this.x = x;
