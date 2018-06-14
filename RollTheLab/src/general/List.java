@@ -1,7 +1,5 @@
 package general;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Operators;
-
 import labImport.ImagePoint;
 
 public class List<T> {
