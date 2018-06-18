@@ -1,6 +1,6 @@
 package general;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public class DrawingLine extends DrawingObjekt {
 	private Vektor startPoint;
@@ -34,7 +34,6 @@ public class DrawingLine extends DrawingObjekt {
 
 	@Override
 	public boolean collidate(DrawingObjekt check) {
-		//Wenn das zu überprüfende Objekt ein Bogen ist
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_ARC)
 		{
 			DrawingArc checkArc = (DrawingArc) check;
