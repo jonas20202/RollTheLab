@@ -27,4 +27,19 @@ public class Vektor {
 	{	
 		return new Vektor(x -vec.x, y - vec.y);
 	}
+
+	public double getAngle(){
+		return Math.sin(x/getLen());
+	}
+
+	public void rotate(double angle){
+		angle += getAngle();
+		double hypo = getLen();
+		y = Math.sinh(angle)*hypo;
+		x = Math.cosh(angle)*hypo;
+	}
+
+	public boolean isRightOr() {if(x > 0) return true; return false;}
+	public boolean isLeftOr() {if(x < 0) return true; return false;}
+	public boolean goesDown() {if(y > 0) return true; return false;}
 }

@@ -10,6 +10,6 @@ public abstract class DrawingObjekt {
 	abstract DrawingType GetDrawingType();
 	
 	public abstract void move(Vektor move);
-	public abstract boolean collidate(DrawingObjekt check);
+	public abstract boolean checkCollision(DrawingObjekt check);
 	public abstract Vektor getMoveVek();
 }

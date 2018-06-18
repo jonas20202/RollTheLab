@@ -33,21 +33,36 @@ public class DrawingLine extends DrawingObjekt {
 	}
 
 	@Override
-	public boolean collidate(DrawingObjekt check) {
+	public boolean checkCollision(DrawingObjekt check) {
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_ARC)
 		{
+			//Convert to Arc
 			DrawingArc checkArc = (DrawingArc) check;
+			if(checkArc.getMidPoint().minusVec(startPoint).getLen() <= checkArc.getRadius() || checkArc.getMidPoint().minusVec(endPoint).getLen() <= checkArc.getRadius())
+				return true;
+
 			double m1 = 0;
-			double m2 = 1;
+			double m2 = 0;
+			double x = 0;
+			Vektor pointOnLine = null;
 			if(endPoint.y - startPoint.y != 0)
 			{
-				m1 = endPoint.y - startPoint.y / endPoint.x - startPoint.x;
-				m2 = -1 / m1;
+				if(endPoint.x - startPoint.x != 0)
+				{
+					m1 = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
+					m2 = -1 / m1;
+					double t1 = startPoint.y - m1 * startPoint.x;
+					double t2 = checkArc.getMidPoint().y - m2* checkArc.getMidPoint().x;
+					x = (t2 - t1) / (m1 - m2);
+					pointOnLine = new Vektor(x, m1 * x + startPoint.y - m1 * startPoint.x);
+				}else {
+					pointOnLine = new Vektor(startPoint.x, checkArc.getMidPoint().y);
+				}
+			}else {
+				x = checkArc.getMidPoint().x;
+				pointOnLine = new Vektor(x, m1 * x + startPoint.y - m1 * startPoint.x);
 			}
-			double t1 = startPoint.y - m1 * startPoint.x;
-			double t2 = checkArc.getMidPoint().y - m2* checkArc.getMidPoint().x;
-			double x = (t1 - t2) / (m1 - m2);
-			Vektor pointOnLine = new Vektor(x, m1 * x + startPoint.y - m1 * startPoint.x);
+
 			Vektor midToPoLine = pointOnLine.minusVec(checkArc.getMidPoint());
 			Vektor sToEnd = endPoint.minusVec(startPoint);
 			Vektor eToPoint = pointOnLine.minusVec(endPoint);
@@ -56,10 +71,7 @@ public class DrawingLine extends DrawingObjekt {
 			testLine = checkArc.getMidPoint();
 			testLine2 = pointOnLine;
 			if( sToEnd.getLen() >= eToPoint.getLen() && sToEnd.getLen() >= sToPoint.getLen() && dLen <= checkArc.getRadius())
-			{
-				
 				return true;
-			}
 		}
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_LINE)
 		{
@@ -71,11 +83,7 @@ public class DrawingLine extends DrawingObjekt {
 
 	@Override
 	public Vektor getMoveVek() {
-		if(endPoint.x - startPoint.x > 0)
-			return new Vektor(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
-		else if(startPoint.x - endPoint.x > 0)
-			return new Vektor(startPoint.x - endPoint.x, startPoint.y - endPoint.y);
-		return new Vektor(0,0);
+		return endPoint.minusVec(startPoint);
 	}
 
 }
