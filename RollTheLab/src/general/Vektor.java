@@ -28,12 +28,15 @@ public class Vektor {
 		return new Vektor(x -vec.x, y - vec.y);
 	}
 
-	public double getAngle(){
-		return Math.sin(x/getLen());
+	public double getCrossingAngle(Vektor crossVec){
+		if(crossVec == null)
+			crossVec = new Vektor(1,0);
+		double skalar = x * crossVec.x + y * crossVec.y;
+		return Math.acos(skalar/(getLen() * crossVec.getLen()));
 	}
 
 	public void rotate(double angle){
-		angle += getAngle();
+		angle += getCrossingAngle(null);
 		double hypo = getLen();
 		y = Math.sinh(angle)*hypo;
 		x = Math.cosh(angle)*hypo;

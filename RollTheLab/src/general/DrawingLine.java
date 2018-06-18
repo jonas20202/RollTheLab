@@ -5,20 +5,16 @@ import java.awt.*;
 public class DrawingLine extends DrawingObjekt {
 	private Vektor startPoint;
 	private Vektor endPoint;
-	private Vektor testLine;
-	private Vektor testLine2;
+
 	
 	public DrawingLine(Vektor startPoint, Vektor endPoint) {
 		this.startPoint = startPoint;
 		this.endPoint = endPoint;
-		testLine = new Vektor(0,0);
-		testLine2 = new Vektor(0,0);
 	}
 	
 	@Override
 	public void draw(Graphics g) {
 		g.drawLine((int)startPoint.x, (int)startPoint.y, (int)endPoint.x, (int)endPoint.y);
-		g.drawLine((int)testLine.x, (int)testLine.y, (int)testLine2.x, (int)testLine2.y);
 	}
 
 	@Override
@@ -68,8 +64,6 @@ public class DrawingLine extends DrawingObjekt {
 			Vektor eToPoint = pointOnLine.minusVec(endPoint);
 			Vektor sToPoint = pointOnLine.minusVec(startPoint);
 			int dLen = (int) midToPoLine.getLen();
-			testLine = checkArc.getMidPoint();
-			testLine2 = pointOnLine;
 			if( sToEnd.getLen() >= eToPoint.getLen() && sToEnd.getLen() >= sToPoint.getLen() && dLen <= checkArc.getRadius())
 				return true;
 		}
