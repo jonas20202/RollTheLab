@@ -77,7 +77,6 @@ public class ImageLine {
 		ListEl curLineEl = lineList.getFirst(); 
 		while(curLineEl != null)
 		{
-			//Testsm
 			for(ListEl compareLineEl = lineList.getFirst(); compareLineEl != null; compareLineEl = compareLineEl.getNext())
 			{
 				if(curLineEl != compareLineEl)
