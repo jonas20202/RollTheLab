@@ -27,4 +27,22 @@ public class Vektor {
 	{	
 		return new Vektor(x -vec.x, y - vec.y);
 	}
+
+	public double getCrossingAngle(Vektor crossVec){
+		if(crossVec == null)
+			crossVec = new Vektor(1,0);
+		double skalar = x * crossVec.x + y * crossVec.y;
+		return Math.acos(skalar/(getLen() * crossVec.getLen()));
+	}
+
+	public void rotate(double angle){
+		angle += getCrossingAngle(null);
+		double hypo = getLen();
+		y = Math.sinh(angle)*hypo;
+		x = Math.cosh(angle)*hypo;
+	}
+
+	public boolean isRightOr() {if(x > 0) return true; return false;}
+	public boolean isLeftOr() {if(x < 0) return true; return false;}
+	public boolean goesDown() {if(y > 0) return true; return false;}
 }

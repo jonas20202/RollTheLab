@@ -3,15 +3,17 @@ package game;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import general.BallPhysic;
 import general.DrawingArc;
 import general.DrawingObjektGroup;
 import general.Vektor;
 
 public class Ball extends DrawingObjektGroup{
+	BallPhysic physik = new BallPhysic();
 	LabGroup lab;
 	DrawingArc ball;
 	public Ball(LabGroup lab) {
-		ball = new DrawingArc(new Vektor(100,1), 30, 0, 360);
+		ball = new DrawingArc(new Vektor(50,100), 15, 0, 360);
 		this.lab = lab; 
 		drawingObjekts.add(ball);
 	}
@@ -19,8 +21,13 @@ public class Ball extends DrawingObjektGroup{
 	@Override
 	public void draw(Graphics g) {
 		super.draw(g);
-		//drawingObjekts.get(0).move(10, 0);
-		if(lab.getCollidateObjekts(ball).drawingObjekts.size() == 0)
-			ball.move(new Vektor(0, 1));	
+		changeDirVec();
+		ball.move(physik.getDir());
+	}
+
+	//Changes the dirVektor of the Ball
+	private void changeDirVec(){
+		DrawingObjektGroup collidateObjekts = lab.getCollidateObjekts(ball);
+		physik.RecalkPhysic(collidateObjekts);
 	}
 }

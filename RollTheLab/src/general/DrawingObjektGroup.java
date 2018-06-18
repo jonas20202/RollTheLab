@@ -25,7 +25,7 @@ public class DrawingObjektGroup {
 		for(int i = 0; i < length; i++)
 		{
 			DrawingObjekt curObj = drawingObjekts.get(i);
-			if(curObj.collidate(checkObj)) {
+			if(curObj.checkCollision(checkObj)) {
 				collidateGroup.drawingObjekts.add(curObj);
 			}
 		}
