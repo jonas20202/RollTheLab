@@ -22,7 +22,12 @@ public class Ball extends DrawingObjektGroup{
 	public void draw(Graphics g) {
 		super.draw(g);
 		changeDirVec();
-		ball.move(physik.getDir());
+		Vektor testdirection = new Vektor(physik);
+		testdirection.setLen(100);
+		testdirection.Add(ball.getMidPoint());
+
+		g.drawLine((int)ball.getMidPoint().x, (int)ball.getMidPoint().y, (int)testdirection.x, (int)testdirection.y);
+		ball.move(physik);
 	}
 
 	//Changes the dirVektor of the Ball
