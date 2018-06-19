@@ -33,6 +33,6 @@ public class Ball extends DrawingObjektGroup{
 	//Changes the dirVektor of the Ball
 	private void changeDirVec(){
 		DrawingObjektGroup collidateObjekts = lab.getCollidateObjekts(ball);
-		physik.RecalkPhysic(collidateObjekts);
+		physik.RecalkPhysic(collidateObjekts, ball.getMidPoint());
 	}
 }

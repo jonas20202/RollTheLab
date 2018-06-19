@@ -19,6 +19,13 @@ public class Vektor {
 		return Math.sqrt(x * x + y * y);
 	}
 
+	public Vektor getOrtho(){
+		Vektor newVec = new Vektor(this);
+		newVec.rotate(Math.PI);
+		newVec.setLen(1);
+		return newVec;
+	}
+
 	//returns the this vector normalist to length 1
 	public Vektor getNormVek() {
 		double dLen = getLen();

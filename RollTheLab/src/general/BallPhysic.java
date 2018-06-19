@@ -1,5 +1,7 @@
 package general;
 
+import game.Ball;
+
 public class BallPhysic extends Vektor{
     private boolean bounce = false;
     final double freeFallSpeed = 0.01;
@@ -11,26 +13,23 @@ public class BallPhysic extends Vektor{
 
     //Recalks the force vector with the current collision Objects
     //and the current force vector
-    public void RecalkPhysic(DrawingObjektGroup collidateObjects){
+    public void RecalkPhysic(DrawingObjektGroup collidateObjects, Vektor ballMidPoint){
         Vektor dir = new Vektor(0,0);
         int nSize = collidateObjects.drawingObjekts.size();
-        boolean isAbove = false;
-        boolean isClosedAngleWithDown = true;
-
+        DrawingObjekt curCollObj = null;
         //get the current dir vector
         if(nSize == 0) {
-            dir = SetSpeedToDir(new Vektor(0, 1));
+            dir = SetSpeedToDir(new Vektor(0.2, 1));
             bounce = false;
         }
         else{
             for(int i = 0; i < nSize; i++)
             {
                 //gets the current object from the collision objects
-                DrawingObjekt curCollObj = collidateObjects.drawingObjekts.get(i);
+                curCollObj = collidateObjects.drawingObjekts.get(i);
 
                 //sets the dir vector with the direction of the collision object
                 dir = curCollObj.getMoveVek();
-                isAbove = curCollObj.isAboveOfObject();
                 //if the direction of the vector goes up turn the vector
                 if(!dir.goesDown())
                     dir = new Vektor(-dir.x, -dir.y);
@@ -45,21 +44,42 @@ public class BallPhysic extends Vektor{
         Vektor dirUp = new Vektor(-dir.x, -dir.y);
         double angleDiffUp = getCrossingAngle(dirUp);
         double angleDiff = angleDiffDown;
-
         if(angleDiffDown > angleDiffUp) {
             angleDiff = angleDiffUp;
-            if(goesDown())
-                isClosedAngleWithDown = false;
-        }else
-            if(!goesDown())
-                isClosedAngleWithDown = false;
+        }
         double len = getLen();
         if(nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
             len /= 1;
-            if((isAbove && !isClosedAngleWithDown)  || (!isAbove && isClosedAngleWithDown))
-                rotate(-(angleDiff*2));
-            else
-                rotate((angleDiff*2));
+//            Vektor ballWithForceDir = new Vektor(ballMidPoint);
+//            ballWithForceDir.Add(this);
+//
+//            Vektor ballWithForceDir = new Vektor(ballMidPoint);
+//            ballWithForceDir.Add(this);
+            double mForce = y / x;
+            double tForce = y - mForce * x;
+
+            double mDir = dir.y / dir.x;
+            double tDir = dir.y - mDir * dir.x;
+
+            double xCrossingPoint = (tDir - tForce) / (mForce - mDir);
+            double yCrossingPoint = mForce * xCrossingPoint + tForce;
+
+            Vektor ortho = dir.getOrtho();
+            double mOrtho = ortho.y / ortho.x;
+            double tOrtho = yCrossingPoint - mOrtho * xCrossingPoint;
+
+            double tDirCross = y - mDir * x;
+
+            double xCrossingPoint2 = (tDirCross - tOrtho) / (mOrtho - mDir);
+            double yCrossingPoint2 = mOrtho * xCrossingPoint2 + tOrtho;
+
+            Vektor move = new Vektor(xCrossingPoint2 - x, yCrossingPoint2 -y);
+            Vektor CrossingPoint2 = new Vektor(xCrossingPoint2, yCrossingPoint2);
+            CrossingPoint2.Add(move);
+
+            x =  xCrossingPoint - CrossingPoint2.x;
+            y =  yCrossingPoint - CrossingPoint2.y;
+            //rotate(-(angleDiff*2));
             setLen(len);
             bounce = true;
         }else if(nSize > 0 && goesDown()){
