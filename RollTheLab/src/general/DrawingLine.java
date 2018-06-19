@@ -44,6 +44,7 @@ public class DrawingLine extends DrawingObjekt {
 			if(endPoint.y - startPoint.y != 0)
 			{
 				if(endPoint.x - startPoint.x != 0)
+
 				{
 					m1 = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
 					m2 = -1 / m1;
