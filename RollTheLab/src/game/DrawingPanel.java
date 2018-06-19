@@ -27,7 +27,7 @@ public class DrawingPanel extends JPanel{
 		drawingObjects.draw(g);
 		ball.draw(g);
 		try {
-			//Thread.sleep(1);
+			Thread.sleep(1);
 		}catch(Exception e)
 		{
 			System.out.println(e);

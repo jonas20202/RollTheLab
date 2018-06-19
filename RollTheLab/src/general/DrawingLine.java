@@ -65,8 +65,13 @@ public class DrawingLine extends DrawingObjekt {
 			Vektor eToPoint = pointOnLine.minusVec(endPoint);
 			Vektor sToPoint = pointOnLine.minusVec(startPoint);
 			int dLen = (int) midToPoLine.getLen();
-			if( sToEnd.getLen() >= eToPoint.getLen() && sToEnd.getLen() >= sToPoint.getLen() && dLen <= checkArc.getRadius())
+			if( sToEnd.getLen() >= eToPoint.getLen() && sToEnd.getLen() >= sToPoint.getLen() && dLen <= checkArc.getRadius()) {
+				if(midToPoLine.goesDown())
+					isAboveOfObject = false;
+				else
+					isAboveOfObject = true;
 				return true;
+			}
 		}
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_LINE)
 		{

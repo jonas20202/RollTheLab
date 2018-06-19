@@ -28,14 +28,21 @@ public class Vektor {
 	//return the angle with the crossing vector(crossVec)
 	//if crossVec = null the x axis will be taken
 	public double getCrossingAngle(Vektor crossVec){
-		if(crossVec == null)
+		if(crossVec == null || crossVec.y == 0)
 			crossVec = new Vektor(1,0);
 		double skalarProduct = x * crossVec.x + y * crossVec.y;
-		return Math.acos(skalarProduct/(getLen() * crossVec.getLen()));
+		double cos = Math.acos(skalarProduct/(getLen() * crossVec.getLen()));
+		if(goesDown())
+			return cos;
+		else
+			return 2*Math.PI - cos;
 	}
 
 	//sets the length of the vector
 	public void setLen(double len){
+		len = Math.abs(len);
+		if(getLen() == 0)
+			return;
 		Vektor normVec = getNormVek();
 		x = normVec.x * len;
 		y = normVec.y * len;
@@ -57,6 +64,10 @@ public class Vektor {
 	}
 
 	public void rotate(double angle){
+		if(angle > 2*Math.PI)
+			angle -= 2*Math.PI;
+		if(angle < 0)
+			angle = 2*Math.PI + angle;
 		angle += getCrossingAngle(null);
 		double hypo = getLen();
 		y = Math.sin(angle)*hypo;
