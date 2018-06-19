@@ -1,49 +1,65 @@
 package general;
 
-public class BallPhysic {
-    private Vektor force = new Vektor(0,1);
-    public Vektor getDir(){ return force;}
+public class BallPhysic extends Vektor{
     private boolean bounce = false;
-    public DrawingLine testLine = new DrawingLine(new Vektor(0,0), new Vektor(0,0));
 
+    //constructor
+    public BallPhysic(){
+        super(0, 0.001);
+    }
+
+    //Recalks the force vector with the current collision Objects
+    //and the current force vector
     public void RecalkPhysic(DrawingObjektGroup collidateObjects){
         Vektor dir = new Vektor(0,0);
         int nSize = collidateObjects.drawingObjekts.size();
+
+        //get the current dir vector
         if(nSize == 0) {
-            dir = new Vektor(0, 1);
+            dir = new Vektor(0, 0.001);
             bounce = false;
         }
         else{
             for(int i = 0; i < nSize; i++)
             {
+                //gets the current object from the collision objects
                 DrawingObjekt curCollObj = collidateObjects.drawingObjekts.get(i);
+
+                //sets the dir vector with the direction of the collision object
                 dir = curCollObj.getMoveVek();
+
+                //if the direction of the vector goes up turn the vector
                 if(!dir.goesDown())
                     dir = new Vektor(-dir.x, -dir.y);
-                Vektor down = new Vektor(0, 1);
+
+                //
                 dir = new Vektor(dir.getNormVek().x * 0.0001, dir.getNormVek().y * 0.0001);
             }
 
         }
-        double testAngek = force.getCrossingAngle(null);
-        double angleDiff = force.getCrossingAngle(null) - dir.getCrossingAngle(null);
-        if(nSize > 0 && Math.abs(angleDiff) > 0 && !bounce) {
-            double len = force.getLen();
-
-            force.rotate(-angleDiff);
-            force = new Vektor(force.getNormVek().x * len, force.getNormVek().y * len);
+        //the difference angle between the current force direction and the new dir vector
+        double angleDiff = getCrossingAngle(dir);
+        double len = getLen();
+        if(nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
+            double testPrevAngle = getCrossingAngle(null);
+            double gradPrev = (360 / (2*Math.PI)) * testPrevAngle;
+            len /= 2;
+            angleDiff *= 2;
+            rotate(-angleDiff);
+            double testAfterAngle = getCrossingAngle(null);
+            double gradnext = (360 / (2*Math.PI)) * testAfterAngle;
+            setLen(len);
             bounce = true;
-            /*if(force.getAngle() > dir.getAngle()) {
-                len = force.getLen();
-                force = new Vektor(dir.getNormVek().x * len, dir.getNormVek().y * len);
-            }*/
-            //force.Add(dir);
-        }else if(nSize > 0 && force.goesDown()){
-            double len = force.getLen();
-            force = new Vektor(dir.getNormVek().x*len, dir.getNormVek().y*len);
+        }else if(nSize > 0 && goesDown()){
+            x = dir.x;
+            y = dir.y;
+            setLen(len);
             //force.Add(dir);
         }
-            force.Add(dir);
+
+        //Adds direction vector
+        if(dir.y != 0)
+            Add(dir);
     }
 
 }
