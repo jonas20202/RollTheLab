@@ -10,10 +10,10 @@ import general.Vektor;
 
 public class Ball extends DrawingObjektGroup{
 	BallPhysic physik = new BallPhysic();
-	LabGroup lab;
-	DrawingArc ball;
+	public LabGroup lab;
+	public DrawingArc ball;
 	public Ball(LabGroup lab) {
-		ball = new DrawingArc(new Vektor(50,100), 15, 0, 360);
+		ball = new DrawingArc(new Vektor(50,0), 15, 0, 360);
 		this.lab = lab; 
 		drawingObjekts.add(ball);
 	}
@@ -32,7 +32,6 @@ public class Ball extends DrawingObjektGroup{
 
 	//Changes the dirVektor of the Ball
 	private void changeDirVec(){
-		DrawingObjektGroup collidateObjekts = lab.getCollidateObjekts(ball);
-		physik.RecalkPhysic(collidateObjekts, ball.getMidPoint());
+		physik.RecalkPhysic(this);
 	}
 }

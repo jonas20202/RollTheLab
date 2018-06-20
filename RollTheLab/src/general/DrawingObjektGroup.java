@@ -18,14 +18,14 @@ public class DrawingObjektGroup {
 		}
 	}
 	
-	public DrawingObjektGroup getCollidateObjekts(DrawingObjekt checkObj)
+	public DrawingObjektGroup getCollidateObjekts(DrawingObjekt checkObj, boolean onlyCrossing)
 	{
 		int length = drawingObjekts.size();
 		DrawingObjektGroup collidateGroup = new DrawingObjektGroup();
 		for(int i = 0; i < length; i++)
 		{
 			DrawingObjekt curObj = drawingObjekts.get(i);
-			if(curObj.checkCollision(checkObj)) {
+			if(curObj.checkCollision(checkObj, onlyCrossing)) {
 				collidateGroup.drawingObjekts.add(curObj);
 			}
 		}

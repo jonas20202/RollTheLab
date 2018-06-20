@@ -9,11 +9,11 @@ public class LabGroup extends DrawingObjektGroup{
 	
 	public LabGroup(String strFile)
 	{
-		//drawingObjekts.add(new DrawingArc(new Vektor(0, 500), 300, 0, 90));
-		drawingObjekts.add(new DrawingLine(new Vektor(0,400), new Vektor(400, 420)));
-//		drawingObjekts.add(new DrawingLine(new Vektor(0,400), new Vektor(400, 700)));
-//		drawingObjekts.add(new DrawingLine(new Vektor(0, 650), new Vektor(1000, 500)));
-//		//drawingObjekts.add(new DrawingLine(new Vektor(500, 750), new Vektor(1500, 550)));
-//		drawingObjekts.add(new DrawingLine(new Vektor(75,365), new Vektor(800, 860)));
+		//rawingObjekts.add(new DrawingArc(new Vektor(0, 300), 300, 0, 90));
+		//drawingObjekts.add(new DrawingLine(new Vektor(0,300), new Vektor(400, 301)));
+		//drawingObjekts.add(new DrawingLine(new Vektor(0,400), new Vektor(400, 700)));
+		drawingObjekts.add(new DrawingLine(new Vektor(0, 650), new Vektor(1000, 500)));
+		drawingObjekts.add(new DrawingLine(new Vektor(00, 750), new Vektor(1500, 550)));
+		drawingObjekts.add(new DrawingLine(new Vektor(0,365), new Vektor(800, 860)));
 	}
 }

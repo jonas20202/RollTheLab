@@ -21,7 +21,7 @@ public class Vektor {
 
 	public Vektor getOrtho(){
 		Vektor newVec = new Vektor(this);
-		newVec.rotate(Math.PI);
+		newVec.rotate(Math.PI/2);
 		newVec.setLen(1);
 		return newVec;
 	}

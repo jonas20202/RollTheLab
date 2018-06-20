@@ -29,7 +29,7 @@ public class DrawingLine extends DrawingObjekt {
 	}
 
 	@Override
-	public boolean checkCollision(DrawingObjekt check) {
+	public boolean checkCollision(DrawingObjekt check, boolean onlyCrossing) {
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_ARC)
 		{
 			//Convert to Arc
@@ -70,7 +70,13 @@ public class DrawingLine extends DrawingObjekt {
 					isAboveOfObject = false;
 				else
 					isAboveOfObject = true;
-				return true;
+				if(onlyCrossing)
+					if(dLen < checkArc.getRadius())
+						return true;
+					else
+						return false;
+				else
+					return true;
 			}
 		}
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_LINE)

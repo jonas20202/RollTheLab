@@ -43,7 +43,7 @@ public class DrawingArc extends DrawingObjekt{
 
 
 	@Override
-	public boolean checkCollision(DrawingObjekt check) {
+	public boolean checkCollision(DrawingObjekt check, boolean onlyCrossing) {
 		//Wenn das zu berprfende Objekt ein Bogen ist
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_ARC)
 		{

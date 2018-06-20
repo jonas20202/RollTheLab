@@ -13,13 +13,14 @@ public class BallPhysic extends Vektor{
 
     //Recalks the force vector with the current collision Objects
     //and the current force vector
-    public void RecalkPhysic(DrawingObjektGroup collidateObjects, Vektor ballMidPoint){
+    public void RecalkPhysic(Ball ball){
+        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false);
         Vektor dir = new Vektor(0,0);
         int nSize = collidateObjects.drawingObjekts.size();
         DrawingObjekt curCollObj = null;
         //get the current dir vector
         if(nSize == 0) {
-            dir = SetSpeedToDir(new Vektor(0.2, 1));
+            dir = SetSpeedToDir(new Vektor(0, 1));
             bounce = false;
         }
         else{
@@ -49,36 +50,61 @@ public class BallPhysic extends Vektor{
         }
         double len = getLen();
         if(nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
-            len /= 1;
+            boolean goesDown = goesDown();
+            len /= 3;
 //            Vektor ballWithForceDir = new Vektor(ballMidPoint);
 //            ballWithForceDir.Add(this);
 //
 //            Vektor ballWithForceDir = new Vektor(ballMidPoint);
 //            ballWithForceDir.Add(this);
-            double mForce = y / x;
-            double tForce = y - mForce * x;
 
-            double mDir = dir.y / dir.x;
-            double tDir = dir.y - mDir * dir.x;
+            if(dir.x == 0)
+            {
+                x = -x;
+            }else{
+                double mDir = dir.y / dir.x;
+                double tMove = y - mDir * x;
 
-            double xCrossingPoint = (tDir - tForce) / (mForce - mDir);
-            double yCrossingPoint = mForce * xCrossingPoint + tForce;
+                Vektor ortho = dir.getOrtho();
+                double mOrtho = ortho.y / ortho.x;
+                double tOrtho = 0;
 
-            Vektor ortho = dir.getOrtho();
-            double mOrtho = ortho.y / ortho.x;
-            double tOrtho = yCrossingPoint - mOrtho * xCrossingPoint;
+                double xCrossingPoint = (tMove) / (mOrtho - mDir);
+                double yCrossingPoint = mOrtho * xCrossingPoint;
 
-            double tDirCross = y - mDir * x;
+                Vektor move = new Vektor(xCrossingPoint - x, yCrossingPoint -y);
+                Add(move);
+                Add(move);
+            }
 
-            double xCrossingPoint2 = (tDirCross - tOrtho) / (mOrtho - mDir);
-            double yCrossingPoint2 = mOrtho * xCrossingPoint2 + tOrtho;
+            if(!canMove(new Vektor(this), ball))
+            {
+                x = -x;
+                y = -y;
+            }
 
-            Vektor move = new Vektor(xCrossingPoint2 - x, yCrossingPoint2 -y);
-            Vektor CrossingPoint2 = new Vektor(xCrossingPoint2, yCrossingPoint2);
-            CrossingPoint2.Add(move);
-
-            x =  xCrossingPoint - CrossingPoint2.x;
-            y =  yCrossingPoint - CrossingPoint2.y;
+//            double mForce = y / x;
+//            double tForce = y - mForce * x;
+//
+//
+//            double tDir = dir.y - mDir * dir.x;
+//
+//            double xCrossingPoint = (tDir - tForce) / (mForce - mDir);
+//            double yCrossingPoint = mForce * xCrossingPoint + tForce;
+//
+//
+//
+//            double tDirCross = y - mDir * x;
+//
+//            double xCrossingPoint2 = (tDirCross - tOrtho) / (mOrtho - mDir);
+//            double yCrossingPoint2 = mOrtho * xCrossingPoint2 + tOrtho;
+//
+//            Vektor move = new Vektor(xCrossingPoint2 - x, yCrossingPoint2 -y);
+//            Vektor CrossingPoint2 = new Vektor(xCrossingPoint2, yCrossingPoint2);
+//            CrossingPoint2.Add(move);
+//
+//            x =  xCrossingPoint - CrossingPoint2.x;
+//            y =  yCrossingPoint - CrossingPoint2.y;
             //rotate(-(angleDiff*2));
             setLen(len);
             bounce = true;
@@ -86,6 +112,7 @@ public class BallPhysic extends Vektor{
             if(dir.y != 0)
                 x = dir.x;
             y = dir.y;
+
             setLen(len);
         }
         if(nSize > 0)
@@ -98,6 +125,17 @@ public class BallPhysic extends Vektor{
         //Adds direction vector
         if(dir.y != 0)
             Add(dir);
+    }
+
+    private boolean canMove(Vektor move, Ball ball){
+        move.setLen(10);
+        move.Add(ball.ball.getMidPoint());
+        DrawingArc movedBall = new DrawingArc(move, ball.ball.getRadius(), 0,360);
+        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(movedBall, true);
+        if(collidateObjects.drawingObjekts.size() == 0)
+            return true;
+        else
+            return false;
     }
 
     private double getSpeed(double angle){
