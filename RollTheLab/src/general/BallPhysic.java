@@ -109,6 +109,9 @@ public class BallPhysic extends Vektor{
             setLen(len);
             bounce = true;
         }else if(nSize > 0 && goesDown()){
+            LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(x,y));
+            LineFunction dirLine = new LineFunction(dir, new Vektor(0,0));
+            len = orthoLine.getCrossingPoint(dirLine).getLen();
             if(dir.y != 0)
                 x = dir.x;
             y = dir.y;
