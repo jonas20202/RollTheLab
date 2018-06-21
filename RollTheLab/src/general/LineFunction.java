@@ -21,7 +21,7 @@ public class LineFunction {
         double y = crossF.m * x + crossF.t;
         if(!goesDown ) {
             if (!crossF.goesDown) {
-                x = (t - crossF.t) / (crossF.m / m);
+                x = (t - crossF.t) / (crossF.m - m);
                 y = m * x + t;
             } else {
                 x = crossF.t;

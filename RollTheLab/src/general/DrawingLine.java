@@ -1,5 +1,6 @@
 package general;
 
+import javax.swing.plaf.metal.MetalTheme;
 import java.awt.*;
 
 public class DrawingLine extends DrawingObjekt {
@@ -29,54 +30,42 @@ public class DrawingLine extends DrawingObjekt {
 	}
 
 	@Override
+	public void rotate(double angle, Vektor midPoint) {
+		endPoint.rotate(angle);
+	}
+
+	@Override
 	public boolean checkCollision(DrawingObjekt check, boolean onlyCrossing) {
+
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_ARC)
 		{
 			//Convert to Arc
 			DrawingArc checkArc = (DrawingArc) check;
 			if(checkArc.getMidPoint().minusVec(startPoint).getLen() <= checkArc.getRadius() || checkArc.getMidPoint().minusVec(endPoint).getLen() <= checkArc.getRadius())
 				return true;
+			LineFunction lineThis = new LineFunction(endPoint.minusVec(startPoint), startPoint);
+			LineFunction thisOrtho = new LineFunction(endPoint.minusVec(startPoint).getOrtho(), checkArc.getMidPoint());
 
-			double m1 = 0;
-			double m2 = 0;
-			double x = 0;
-			Vektor pointOnLine = null;
-			if(endPoint.y - startPoint.y != 0)
-			{
-				if(endPoint.x - startPoint.x != 0)
+			Vektor pointOnLine = lineThis.getCrossingPoint(thisOrtho);
 
-				{
-					m1 = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
-					m2 = -1 / m1;
-					double t1 = startPoint.y - m1 * startPoint.x;
-					double t2 = checkArc.getMidPoint().y - m2* checkArc.getMidPoint().x;
-					x = (t2 - t1) / (m1 - m2);
-					pointOnLine = new Vektor(x, m1 * x + startPoint.y - m1 * startPoint.x);
-				}else {
-					pointOnLine = new Vektor(startPoint.x, checkArc.getMidPoint().y);
-				}
-			}else {
-				x = checkArc.getMidPoint().x;
-				pointOnLine = new Vektor(x, m1 * x + startPoint.y - m1 * startPoint.x);
-			}
-
-			Vektor midToPoLine = pointOnLine.minusVec(checkArc.getMidPoint());
-			Vektor sToEnd = endPoint.minusVec(startPoint);
-			Vektor eToPoint = pointOnLine.minusVec(endPoint);
-			Vektor sToPoint = pointOnLine.minusVec(startPoint);
-			int dLen = (int) midToPoLine.getLen();
-			if( sToEnd.getLen() >= eToPoint.getLen() && sToEnd.getLen() >= sToPoint.getLen() && dLen <= checkArc.getRadius()) {
-				if(midToPoLine.goesDown())
-					isAboveOfObject = false;
-				else
-					isAboveOfObject = true;
+			Vektor midToPoint = pointOnLine.minusVec(checkArc.getMidPoint());
+			Vektor startToEnd = endPoint.minusVec(startPoint);
+			Vektor endToPoint = pointOnLine.minusVec(endPoint);
+			Vektor startToPoint = pointOnLine.minusVec(startPoint);
+			int lenMidToPoint = (int) midToPoint.getLen();
+			int lenStartToEnd = (int)startToEnd.getLen() + checkArc.getRadius();
+			int collisionDifValue = lenMidToPoint - checkArc.getRadius();
+			midToPoint.setLen(collisionDifValue+1);
+			midToPoint.x = -midToPoint.x;
+			midToPoint.y = -midToPoint.y;
+			moveOnLine = midToPoint;
+			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0) {
 				if(onlyCrossing)
-					if(dLen < checkArc.getRadius())
+					if(collisionDifValue < 0)
 						return true;
 					else
 						return false;
-				else
-					return true;
+				return true;
 			}
 		}
 		if(check.GetDrawingType() == DrawingType.DRAWING_TYPE_LINE)

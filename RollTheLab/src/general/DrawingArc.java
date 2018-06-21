@@ -7,10 +7,20 @@ public class DrawingArc extends DrawingObjekt{
 	private Vektor midPoint;
 	private int radius;
 	private double startAngle, arcAngle;
-	
-//	public DrawingArc(int midX, int midY, int radius) {
-//		//this.DrawingArc(midX, midY, radius, 0.0, 360.0);
-//	}
+
+	public DrawingArc(Vektor mid, int radius, double startAngle, double arcAngle) {
+		midPoint = mid;
+		this.radius = radius;
+		this.startAngle = startAngle;
+		this.arcAngle = arcAngle;
+	}
+
+	public DrawingArc(DrawingArc copyArc) {
+		midPoint = new Vektor(copyArc.getMidPoint());
+		radius = copyArc.getRadius();
+		startAngle = copyArc.startAngle;
+		arcAngle = copyArc.arcAngle;
+	}
 	
 	public Vektor getMidPoint() {
 		return midPoint;
@@ -18,12 +28,7 @@ public class DrawingArc extends DrawingObjekt{
 	
 	public int getRadius() { return radius;}
 	
-	public DrawingArc(Vektor mid, int radius, double startAngle, double arcAngle) {
-		midPoint = mid;
-		this.radius = radius;
-		this.startAngle = startAngle;
-		this.arcAngle = arcAngle;
-	}
+
 	
 	@Override
 	public void draw(Graphics g) {
@@ -39,6 +44,11 @@ public class DrawingArc extends DrawingObjekt{
 	@Override
 	public void move(Vektor move) {
 		midPoint.Add(move);
+	}
+
+	@Override
+	public void rotate(double angle, Vektor midPoint) {
+
 	}
 
 

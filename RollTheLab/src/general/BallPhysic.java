@@ -4,8 +4,8 @@ import game.Ball;
 
 public class BallPhysic extends Vektor{
     private boolean bounce = false;
-    final double freeFallSpeed = 0.01;
-    final double frictionValue = 0.00005;
+    final double freeFallSpeed = 0.02;
+    final double frictionValue = 0.00001;
     //constructor
     public BallPhysic(){
         super(0, 0.001);
@@ -15,130 +15,134 @@ public class BallPhysic extends Vektor{
     //and the current force vector
     public void RecalkPhysic(Ball ball){
         DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false);
-        Vektor dir = new Vektor(0,0);
         int nSize = collidateObjects.drawingObjekts.size();
-        DrawingObjekt curCollObj = null;
-        //get the current dir vector
-        if(nSize == 0) {
-            dir = SetSpeedToDir(new Vektor(0, 1));
-            bounce = false;
-        }
-        else{
-            for(int i = 0; i < nSize; i++)
-            {
-                //gets the current object from the collision objects
-                curCollObj = collidateObjects.drawingObjekts.get(i);
 
-                //sets the dir vector with the direction of the collision object
-                dir = curCollObj.getMoveVek();
-                //if the direction of the vector goes up turn the vector
-                if(!dir.goesDown())
-                    dir = new Vektor(-dir.x, -dir.y);
-
-                dir = SetSpeedToDir(new Vektor(dir.getNormVek().x, dir.getNormVek().y));
+        Vektor dir = null;
+        boolean canMove = false;
+        int curCollObj = 0;
+        while(!canMove) {
+            //At the first time
+            Vektor forceBk = new Vektor(this);
+            if (dir == null) {
+                dir = SetSpeedToDir(new Vektor(0, 1));
+                if(nSize == 0)
+                    bounce = false;
+            }else {
+                if (curCollObj < nSize) {
+                    dir = getDirVec(curCollObj, collidateObjects);
+                    curCollObj++;
+                } else{
+                    break;
+                }
+            }
+            //the difference angle between the current force direction and the new dir vector
+            double angleDiffDown = getCrossingAngle(dir);
+            Vektor dirUp = new Vektor(-dir.x, -dir.y);
+            double angleDiffUp = getCrossingAngle(dirUp);
+            double angleDiff = angleDiffDown;
+            if (angleDiffDown > angleDiffUp) {
+                angleDiff = angleDiffUp;
             }
 
-        }
-        //the difference angle between the current force direction and the new dir vector
+            double len = getLen();
+            if (nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
+                boolean goesDown = goesDown();
+                len /= 1;
 
-        double angleDiffDown = getCrossingAngle(dir);
-        Vektor dirUp = new Vektor(-dir.x, -dir.y);
-        double angleDiffUp = getCrossingAngle(dirUp);
-        double angleDiff = angleDiffDown;
-        if(angleDiffDown > angleDiffUp) {
-            angleDiff = angleDiffUp;
-        }
-        double len = getLen();
-        if(nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
-            boolean goesDown = goesDown();
-            len /= 3;
-//            Vektor ballWithForceDir = new Vektor(ballMidPoint);
-//            ballWithForceDir.Add(this);
-//
-//            Vektor ballWithForceDir = new Vektor(ballMidPoint);
-//            ballWithForceDir.Add(this);
+                LineFunction dirLine = new LineFunction(dir, this);
+                LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(0, 0));
 
-            if(dir.x == 0)
-            {
-                x = -x;
-            }else{
-                double mDir = dir.y / dir.x;
-                double tMove = y - mDir * x;
-
-                Vektor ortho = dir.getOrtho();
-                double mOrtho = ortho.y / ortho.x;
-                double tOrtho = 0;
-
-                double xCrossingPoint = (tMove) / (mOrtho - mDir);
-                double yCrossingPoint = mOrtho * xCrossingPoint;
-
-                Vektor move = new Vektor(xCrossingPoint - x, yCrossingPoint -y);
+                Vektor CrossingPoint = orthoLine.getCrossingPoint(dirLine);
+                Vektor move = CrossingPoint.minusVec(this);
                 Add(move);
                 Add(move);
+
+                Vektor moveTest = new Vektor(this);
+                moveTest.setLen(10);
+                if (!canMove(new Vektor(new Vektor(moveTest)), ball, false)) {
+                    x = -x;
+                    y = -y;
+                }
+
+                setLen(len);
+                bounce = true;
+            } else if (nSize > 0 && goesDown()) {
+                LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(x, y));
+                LineFunction dirLine = new LineFunction(dir, new Vektor(0, 0));
+                len = orthoLine.getCrossingPoint(dirLine).getLen();
+
+                if (dir.y != 0)
+                    x = dir.x;
+                y = dir.y;
+
+                Vektor newVecUp = new Vektor(-x, -y);
+                double testADown = getCrossingAngle(forceBk);
+                double testAUp = newVecUp.getCrossingAngle(forceBk);
+                if(forceBk.isRightOr() != isRightOr() && forceBk.isLeftOr() != isLeftOr())
+                {
+                    x = newVecUp.x;
+                    y = newVecUp.y;
+                    len -= dir.getLen();
+                }
+                setLen(len);
             }
 
-            if(!canMove(new Vektor(this), ball))
-            {
-                x = -x;
-                y = -y;
+            //Add friction of the line
+            if (nSize > 0) {
+                if (getLen() >= frictionValue)
+                    setLen((getLen() - frictionValue));
+                else
+                    setLen(0);
             }
 
-//            double mForce = y / x;
-//            double tForce = y - mForce * x;
-//
-//
-//            double tDir = dir.y - mDir * dir.x;
-//
-//            double xCrossingPoint = (tDir - tForce) / (mForce - mDir);
-//            double yCrossingPoint = mForce * xCrossingPoint + tForce;
-//
-//
-//
-//            double tDirCross = y - mDir * x;
-//
-//            double xCrossingPoint2 = (tDirCross - tOrtho) / (mOrtho - mDir);
-//            double yCrossingPoint2 = mOrtho * xCrossingPoint2 + tOrtho;
-//
-//            Vektor move = new Vektor(xCrossingPoint2 - x, yCrossingPoint2 -y);
-//            Vektor CrossingPoint2 = new Vektor(xCrossingPoint2, yCrossingPoint2);
-//            CrossingPoint2.Add(move);
-//
-//            x =  xCrossingPoint - CrossingPoint2.x;
-//            y =  yCrossingPoint - CrossingPoint2.y;
-            //rotate(-(angleDiff*2));
-            setLen(len);
-            bounce = true;
-        }else if(nSize > 0 && goesDown()){
-            LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(x,y));
-            LineFunction dirLine = new LineFunction(dir, new Vektor(0,0));
-            len = orthoLine.getCrossingPoint(dirLine).getLen();
-            if(dir.y != 0)
-                x = dir.x;
-            y = dir.y;
 
-            setLen(len);
-        }
-        if(nSize > 0)
-        {
-            if(getLen() >= frictionValue)
-                setLen((getLen()-frictionValue));
+            if (dir.y != 0)
+                Add(dir);
+
+            if(canMove(this, ball, true))
+                canMove = true;
             else
-                setLen(0);
+            {
+
+                x = forceBk.x;
+                y = forceBk.y;
+            }
         }
-        //Adds direction vector
-        if(dir.y != 0)
-            Add(dir);
     }
 
-    private boolean canMove(Vektor move, Ball ball){
-        move.setLen(10);
-        move.Add(ball.ball.getMidPoint());
-        DrawingArc movedBall = new DrawingArc(move, ball.ball.getRadius(), 0,360);
+    private Vektor getDirVec(int i, DrawingObjektGroup collidateObjects){
+        Vektor dir = null;
+        //gets the current object from the collision objects
+        DrawingObjekt curCollObj = curCollObj = collidateObjects.drawingObjekts.get(i);
+
+        //sets the dir vector with the direction of the collision object
+        dir = curCollObj.getMoveVek();
+        //if the direction of the vector goes up turn the vector
+        if(!dir.goesDown())
+            dir = new Vektor(-dir.x, -dir.y);
+
+        dir = SetSpeedToDir(new Vektor(dir.getNormVek().x, dir.getNormVek().y));
+        return dir;
+    }
+
+    private boolean canMove(Vektor move, Ball ball, boolean CorrectDiff){
+        Vektor moveCopy = new Vektor(move);
+        moveCopy.Add(ball.ball.getMidPoint());
+        DrawingArc movedBall = new DrawingArc(moveCopy, ball.ball.getRadius(), 0,360);
         DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(movedBall, true);
         if(collidateObjects.drawingObjekts.size() == 0)
             return true;
-        else
+        else {
+            if(CorrectDiff)
+            {
+                while(collidateObjects.drawingObjekts.size() > 0) {
+                    Vektor moveVec = collidateObjects.drawingObjekts.get(0).getMoveOnLineVec();
+                    ball.ball.move(moveVec);
+                    collidateObjects = ball.lab.getCollidateObjekts(ball.ball, true);
+                }
+            }
             return false;
+        }
     }
 
     private double getSpeed(double angle){

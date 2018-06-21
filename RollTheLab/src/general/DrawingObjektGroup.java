@@ -31,4 +31,10 @@ public class DrawingObjektGroup {
 		}
 		return collidateGroup;
 	}
+
+	public void rotate(double angle, Vektor midPoint){
+		int length = drawingObjekts.size();
+		for(int i = 0; i < length; i++)
+			drawingObjekts.get(i).rotate(angle, midPoint);
+	}
 }

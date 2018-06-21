@@ -9,11 +9,12 @@ import javax.swing.*;
 
 public class GameFrame extends JFrame{
 	public int width = 1200;
-	public int height = 890;
+	public int height = 900;
 	
 	private JPanel drawingPanel;
 	//Constructor for the Frame
 	public GameFrame() {
+		setResizable(false);
 		drawingPanel = new DrawingPanel();
 		drawingPanel.setPreferredSize(new Dimension(width, height));
 		

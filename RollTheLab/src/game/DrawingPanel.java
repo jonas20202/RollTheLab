@@ -1,14 +1,38 @@
 package game;
 
+import general.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.event.*;
 
 public class DrawingPanel extends JPanel{	
 	LabGroup drawingObjects;
 	Ball ball;
 	//Constructor
 	public DrawingPanel() {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent ke) {
+				synchronized (GameKeyListener.class) {
+					switch (ke.getID()) {
+						case KeyEvent.KEY_PRESSED:
+							if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
+								GameKeyListener.wPressed = true;
+							}
+							break;
+
+						case KeyEvent.KEY_RELEASED:
+							if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
+								GameKeyListener.wPressed = false;
+							}
+							break;
+					}
+					return false;
+				}
+			}
+		});
 		drawingObjects = new LabGroup("test");
 		ball = new Ball(drawingObjects);
 //		drawingObjects.add(new DrawingArc(100, 100, 100, 0, 360));
