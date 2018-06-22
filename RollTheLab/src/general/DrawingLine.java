@@ -55,7 +55,9 @@ public class DrawingLine extends DrawingObjekt {
 			int lenMidToPoint = (int) midToPoint.getLen();
 			int lenStartToEnd = (int)startToEnd.getLen() + checkArc.getRadius();
 			int collisionDifValue = lenMidToPoint - checkArc.getRadius();
-			midToPoint.setLen(collisionDifValue+1);
+			if(collisionDifValue > 0)
+				collisionDifValue++;
+			midToPoint.setLen(collisionDifValue);
 			midToPoint.x = -midToPoint.x;
 			midToPoint.y = -midToPoint.y;
 			moveOnLine = midToPoint;
@@ -77,7 +79,7 @@ public class DrawingLine extends DrawingObjekt {
 	}
 
 	@Override
-	public Vektor getMoveVek() {
+	public Vektor getMoveVek(Vektor reverencePoint) {
 		return endPoint.minusVec(startPoint);
 	}
 

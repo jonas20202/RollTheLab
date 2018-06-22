@@ -3,6 +3,7 @@ package general;
 import game.Ball;
 
 public class BallPhysic extends Vektor{
+
     private boolean bounce = false;
     final double freeFallSpeed = 0.02;
     final double frictionValue = 0.00001;
@@ -23,13 +24,13 @@ public class BallPhysic extends Vektor{
         while(!canMove) {
             //At the first time
             Vektor forceBk = new Vektor(this);
-            if (dir == null) {
+            if (dir == null && nSize == 0) {
                 dir = SetSpeedToDir(new Vektor(0, 1));
                 if(nSize == 0)
                     bounce = false;
             }else {
                 if (curCollObj < nSize) {
-                    dir = getDirVec(curCollObj, collidateObjects);
+                    dir = getDirVec(curCollObj, collidateObjects, ball);
                     curCollObj++;
                 } else{
                     break;
@@ -47,7 +48,7 @@ public class BallPhysic extends Vektor{
             double len = getLen();
             if (nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
                 boolean goesDown = goesDown();
-                len /= 1;
+                len /= 3;
 
                 LineFunction dirLine = new LineFunction(dir, this);
                 LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(0, 0));
@@ -80,6 +81,7 @@ public class BallPhysic extends Vektor{
                 double testAUp = newVecUp.getCrossingAngle(forceBk);
                 if(forceBk.isRightOr() != isRightOr() && forceBk.isLeftOr() != isLeftOr())
                 {
+
                     x = newVecUp.x;
                     y = newVecUp.y;
                     len -= dir.getLen();
@@ -110,13 +112,13 @@ public class BallPhysic extends Vektor{
         }
     }
 
-    private Vektor getDirVec(int i, DrawingObjektGroup collidateObjects){
+    private Vektor getDirVec(int i, DrawingObjektGroup collidateObjects, Ball ball){
         Vektor dir = null;
         //gets the current object from the collision objects
         DrawingObjekt curCollObj = curCollObj = collidateObjects.drawingObjekts.get(i);
 
         //sets the dir vector with the direction of the collision object
-        dir = curCollObj.getMoveVek();
+        dir = curCollObj.getMoveVek(ball.ball.getMidPoint());
         //if the direction of the vector goes up turn the vector
         if(!dir.goesDown())
             dir = new Vektor(-dir.x, -dir.y);
@@ -126,41 +128,55 @@ public class BallPhysic extends Vektor{
     }
 
     private boolean canMove(Vektor move, Ball ball, boolean CorrectDiff){
+
         Vektor moveCopy = new Vektor(move);
         moveCopy.Add(ball.ball.getMidPoint());
+
         DrawingArc movedBall = new DrawingArc(moveCopy, ball.ball.getRadius(), 0,360);
         DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(movedBall, true);
+
         if(collidateObjects.drawingObjekts.size() == 0)
             return true;
         else {
+
             if(CorrectDiff)
             {
+                int size = collidateObjects.drawingObjekts.size();
+
                 while(collidateObjects.drawingObjekts.size() > 0) {
+
                     Vektor moveVec = collidateObjects.drawingObjekts.get(0).getMoveOnLineVec();
                     ball.ball.move(moveVec);
                     collidateObjects = ball.lab.getCollidateObjekts(ball.ball, true);
+
                 }
             }
             return false;
+
         }
     }
 
     private double getSpeed(double angle){
+
         if(angle > Math.PI / 2) {
+
             if (angle > Math.PI) {
+
                 if (angle > Math.PI * 1.5) {
                     return (angle - Math.PI * 2) * (freeFallSpeed / Math.PI / 2);
-                } else
-                    return (angle - Math.PI) * (freeFallSpeed / Math.PI / 2);
-            } else
-                return (angle - Math.PI) * (freeFallSpeed / Math.PI / 2);
-        } else
-            return angle * (freeFallSpeed / Math.PI / 2);
+                } else return (angle - Math.PI) * (freeFallSpeed / Math.PI / 2);
+
+            } else return (angle - Math.PI) * (freeFallSpeed / Math.PI / 2);
+
+        } else return angle * (freeFallSpeed / Math.PI / 2);
+
     }
 
     private Vektor SetSpeedToDir(Vektor dir){
+
         double len = getSpeed(dir.getCrossingAngle(null));
         dir.setLen(len);
         return dir;
+
     }
 }

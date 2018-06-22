@@ -16,5 +16,5 @@ public abstract class DrawingObjekt {
 	public abstract void move(Vektor move);
 	public abstract void rotate(double angle, Vektor midPoint);
 	public abstract boolean checkCollision(DrawingObjekt check, boolean onlyCrossing);
-	public abstract Vektor getMoveVek();
+	public abstract Vektor getMoveVek(Vektor reverencePoint);
 }

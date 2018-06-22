@@ -67,8 +67,9 @@ public class DrawingArc extends DrawingObjekt{
 	}
 
 	@Override
-	public Vektor getMoveVek() {
-		
+	public Vektor getMoveVek(Vektor reverencePoint) {
+		Vektor dir = new Vektor(0,0);
+
 		return null;
 	}
 }
