@@ -81,4 +81,12 @@ public class Vektor {
 		x = Math.cos(angle)*hypo;
 	}
 
+	public void rotateAroundMid(double angle, Vektor midPoint){
+		Vektor rotateVec = minusVec(midPoint);
+		rotateVec.rotate(angle);
+		rotateVec.Add(midPoint);
+		this.x = rotateVec.x;
+		this.y = rotateVec.y;
+	}
+
 }

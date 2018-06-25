@@ -12,9 +12,9 @@ public class LabGroup extends DrawingObjektGroup{
 	public LabGroup(String strFile)
 	{
 		midPoint = new Vektor(600, 450);
-        drawingObjekts.add(new DrawingLine(new Vektor(0,100), new Vektor(150, 110)));
+        //drawingObjekts.add(new DrawingLine(new Vektor(0,100), new Vektor(150, 110)));
         //drawingObjekts.add(new DrawingLine(new Vektor(150, 106), new Vektor(150, 151)));
-		//drawingObjekts.add(new DrawingArc(new Vektor(50, 390), 300, 0, 90));
+		drawingObjekts.add(new DrawingArc(new Vektor(0, 390), 300, 0, 90));
         //drawingObjekts.add(new DrawingLine(new Vektor(0,300), new Vektor(400, 301)));
         //drawingObjekts.add(new DrawingLine(new Vektor(0,350), new Vektor(1000, 350)));
 		//drawingObjekts.add(new DrawingLine(new Vektor(500, 400), new Vektor(1000, 395)));

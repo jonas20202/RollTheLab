@@ -31,7 +31,8 @@ public class DrawingLine extends DrawingObjekt {
 
 	@Override
 	public void rotate(double angle, Vektor midPoint) {
-		endPoint.rotate(angle);
+		startPoint.rotateAroundMid(angle, midPoint);
+		endPoint.rotateAroundMid(angle, midPoint);
 	}
 
 	@Override
