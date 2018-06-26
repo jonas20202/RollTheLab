@@ -62,7 +62,7 @@ public class DrawingLine extends DrawingObjekt {
 			midToPoint.x = -midToPoint.x;
 			midToPoint.y = -midToPoint.y;
 			moveOnLine = midToPoint;
-			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0.0) {
+			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0.00) {
 				if(onlyCrossing)
 					if(collisionDifValue < 0.0)
 						return true;
