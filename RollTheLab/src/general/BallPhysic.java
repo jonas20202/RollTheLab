@@ -157,7 +157,8 @@ public class BallPhysic extends Vektor{
     }
 
     private double getSpeed(double angle){
-
+        if (angle == 0)
+            return 1;
         if(angle > Math.PI / 2) {
 
             if (angle > Math.PI) {

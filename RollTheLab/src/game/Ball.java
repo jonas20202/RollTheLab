@@ -13,8 +13,8 @@ public class Ball extends DrawingObjektGroup{
 	public LabGroup lab;
 	public DrawingArc ball;
 	public Ball(LabGroup lab) {
-		ball = new DrawingArc(new Vektor(50,50), 15, 0, 360);
-		this.lab = lab; 
+		ball = new DrawingArc(new Vektor(450,400), 15, 0, 360);
+		this.lab = lab;
 		drawingObjekts.add(ball);
 	}
 	

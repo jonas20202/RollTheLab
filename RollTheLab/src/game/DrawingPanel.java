@@ -19,15 +19,23 @@ public class DrawingPanel extends JPanel{
 					switch (ke.getID()) {
 						case KeyEvent.KEY_PRESSED:
 							if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
-								GameKeyListener.wPressed = true;
+								GameKeyListener.isTurnRightPressed = true;
+							}else
+							if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
+								GameKeyListener.isTurnLeftPressed = true;
 							}
 							break;
 
 						case KeyEvent.KEY_RELEASED:
 							if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
-								GameKeyListener.wPressed = false;
+								GameKeyListener.isTurnRightPressed = false;
+							}else
+							if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
+								GameKeyListener.isTurnLeftPressed = false;
 							}
+
 							break;
+
 					}
 					return false;
 				}
