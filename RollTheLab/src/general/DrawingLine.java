@@ -53,18 +53,18 @@ public class DrawingLine extends DrawingObjekt {
 			Vektor startToEnd = endPoint.minusVec(startPoint);
 			Vektor endToPoint = pointOnLine.minusVec(endPoint);
 			Vektor startToPoint = pointOnLine.minusVec(startPoint);
-			int lenMidToPoint = (int) midToPoint.getLen();
-			int lenStartToEnd = (int)startToEnd.getLen() + checkArc.getRadius();
-			int collisionDifValue = lenMidToPoint - checkArc.getRadius();
-			if(collisionDifValue > 0)
-				collisionDifValue++;
+			double lenMidToPoint = midToPoint.getLen();
+			double lenStartToEnd = startToEnd.getLen() + checkArc.getRadius();
+			double collisionDifValue = lenMidToPoint - checkArc.getRadius();
+//			if(collisionDifValue > 0)
+//				collisionDifValue++;
 			midToPoint.setLen(collisionDifValue);
 			midToPoint.x = -midToPoint.x;
 			midToPoint.y = -midToPoint.y;
 			moveOnLine = midToPoint;
-			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0) {
+			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0.0) {
 				if(onlyCrossing)
-					if(collisionDifValue < 0)
+					if(collisionDifValue < 0.0)
 						return true;
 					else
 						return false;

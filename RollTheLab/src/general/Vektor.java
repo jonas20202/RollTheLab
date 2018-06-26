@@ -37,6 +37,8 @@ public class Vektor {
 	public double getCrossingAngle(Vektor crossVec){
 		if(crossVec == null || crossVec.y == 0)
 			crossVec = new Vektor(1,0);
+		if(y == 0)
+			return 0;
 		double skalarProduct = x * crossVec.x + y * crossVec.y;
 		double cos = Math.acos(skalarProduct/(getLen() * crossVec.getLen()));
 		if(goesDown())

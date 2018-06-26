@@ -48,14 +48,14 @@ public class ImageLine {
 	
 	//Checks the Line if correct
 	public static boolean isLineCor(List<ImagePoint> pointList) {
-		int x0 = pointList.getFirst().element.x;
-		int y0 = pointList.getFirst().element.y;
-		int x1 = pointList.getLast().element.x;
-		int y1 = pointList.getLast().element.y;
+		double x0 = pointList.getFirst().element.x;
+		double y0 = pointList.getFirst().element.y;
+		double x1 = pointList.getLast().element.x;
+		double y1 = pointList.getLast().element.y;
 		
-		int dx =  Math.abs(x1-x0), sx = x0<x1 ? 1 : -1;
-		int dy = -Math.abs(y1-y0), sy = y0<y1 ? 1 : -1;
-		int err = dx+dy, e2; /* error value e_xy */
+		double dx =  Math.abs(x1-x0), sx = x0<x1 ? 1 : -1;
+		double dy = -Math.abs(y1-y0), sy = y0<y1 ? 1 : -1;
+		double err = dx+dy, e2; /* error value e_xy */
 
 		ListEl curEl = pointList.getFirst();
 		while(curEl != null){

@@ -6,12 +6,11 @@ import java.awt.*;
 
 public class LabGroup extends DrawingObjektGroup{
 	private double rotate;
-	private Vektor midPoint;
 	boolean turnRigtht = false;
 
 	public LabGroup(String strFile)
 	{
-		midPoint = new Vektor(600, 450);
+		Vektor midPoint = GameFrame.midPoint;
         //drawingObjekts.add(new DrawingLine(new Vektor(0,100), new Vektor(150, 110)));
         //drawingObjekts.add(new DrawingLine(new Vektor(150, 106), new Vektor(150, 151)));
 		//drawingObjekts.add(new DrawingArc(new Vektor(0, 390), 300, 0, 90));
@@ -44,12 +43,12 @@ public class LabGroup extends DrawingObjektGroup{
 	}
 
 	public void startTurnRight(){
-	    rotate = -0.001;
-		rotate(rotate, midPoint);
+	    rotate = +0.001;
+		rotate(rotate, GameFrame.midPoint);
 	}
 
 	public void startTurnLeft(){
-		rotate = 0.001;
-		rotate(rotate, midPoint);
+		rotate = -0.001;
+		rotate(rotate, GameFrame.midPoint);
 	}
 }

@@ -26,7 +26,7 @@ public class Ball extends DrawingObjektGroup{
 		testdirection.setLen(100);
 		testdirection.Add(ball.getMidPoint());
 
-		//g.drawLine((int)ball.getMidPoint().x, (int)ball.getMidPoint().y, (int)testdirection.x, (int)testdirection.y);
+		g.drawLine((int)ball.getMidPoint().x, (int)ball.getMidPoint().y, (int)testdirection.x, (int)testdirection.y);
 		ball.move(physik);
 	}
 

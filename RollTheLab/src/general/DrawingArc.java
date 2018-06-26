@@ -49,8 +49,7 @@ public class DrawingArc extends DrawingObjekt{
 
 	@Override
 	public void rotate(double angle, Vektor midPoint) {
-		startAngle += angle;
-		endAngle += angle;
+		this.midPoint.rotateAroundMid(angle, midPoint);
 	}
 
 

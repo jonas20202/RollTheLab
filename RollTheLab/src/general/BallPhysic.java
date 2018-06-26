@@ -1,6 +1,8 @@
 package general;
 
 import game.Ball;
+import game.GameFrame;
+import general.*;
 
 public class BallPhysic extends Vektor{
 
@@ -21,6 +23,16 @@ public class BallPhysic extends Vektor{
         Vektor dir = null;
         boolean canMove = false;
         int curCollObj = 0;
+
+        if(true) {
+            double rotate = 0;
+            if (GameKeyListener.isTurnRightPressed())
+                rotate += 0.001;
+            if (GameKeyListener.isTurnLeftPressed())
+                rotate -= 0.001;
+            ball.rotate(rotate, GameFrame.midPoint);
+        }
+
         while(!canMove) {
             //At the first time
             Vektor forceBk = new Vektor(this);
@@ -105,9 +117,13 @@ public class BallPhysic extends Vektor{
                 canMove = true;
             else
             {
-
-                x = forceBk.x;
-                y = forceBk.y;
+                if(nSize > 0 && nSize == curCollObj) {
+                    x = 0;
+                    y = 0;
+                }else {
+                    x = forceBk.x;
+                    y = forceBk.y;
+                }
             }
         }
     }
@@ -157,7 +173,7 @@ public class BallPhysic extends Vektor{
     }
 
     private double getSpeed(double angle){
-        if (angle == 0)
+        if (angle == 0 || angle == Math.PI)
             return 1;
         if(angle > Math.PI / 2) {
 

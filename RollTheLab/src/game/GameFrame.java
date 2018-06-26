@@ -1,5 +1,7 @@
 package game;
 
+import general.Vektor;
+
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -10,7 +12,7 @@ import javax.swing.*;
 public class GameFrame extends JFrame{
 	public int width = 1200;
 	public int height = 900;
-	
+	public static Vektor midPoint = new Vektor(600, 450);
 	private JPanel drawingPanel;
 	//Constructor for the Frame
 	public GameFrame() {
