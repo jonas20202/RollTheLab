@@ -55,7 +55,7 @@ public class DrawingLine extends DrawingObjekt {
 			Vektor startToPoint = pointOnLine.minusVec(startPoint);
 			double lenMidToPoint = midToPoint.getLen();
 			double lenStartToEnd = startToEnd.getLen() + checkArc.getRadius();
-			double collisionDifValue = lenMidToPoint - checkArc.getRadius();
+			int collisionDifValue = (int)Math.round(lenMidToPoint - checkArc.getRadius());
 //			if(collisionDifValue > 0)
 //				collisionDifValue++;
 			midToPoint.setLen(collisionDifValue);

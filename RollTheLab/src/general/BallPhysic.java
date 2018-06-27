@@ -7,7 +7,7 @@ import general.*;
 public class BallPhysic extends Vektor{
 
     private boolean bounce = false;
-    final double freeFallSpeed = 0.02;
+    final double freeFallSpeed = 0.05;
     final double frictionValue = 0.00001;
     //constructor
     public BallPhysic(){
@@ -17,6 +17,7 @@ public class BallPhysic extends Vektor{
     //Recalks the force vector with the current collision Objects
     //and the current force vector
     public void RecalkPhysic(Ball ball){
+        canMove(new Vektor(0,0), ball, true);
         DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false);
         int nSize = collidateObjects.drawingObjekts.size();
 
@@ -26,10 +27,10 @@ public class BallPhysic extends Vektor{
 
         if(true) {
             double rotate = 0;
-            if (GameKeyListener.isTurnRightPressed())
-                rotate += 0.001;
-            if (GameKeyListener.isTurnLeftPressed())
-                rotate -= 0.001;
+//            if (GameKeyListener.isTurnRightPressed())
+//                rotate += 0.001;
+//            if (GameKeyListener.isTurnLeftPressed())
+//                rotate -= 0.001;
             ball.rotate(rotate, GameFrame.midPoint);
         }
 
@@ -124,6 +125,7 @@ public class BallPhysic extends Vektor{
                     x = forceBk.x;
                     y = forceBk.y;
                 }
+                System.out.println("kann nicht");
             }
         }
     }
@@ -143,7 +145,7 @@ public class BallPhysic extends Vektor{
         return dir;
     }
 
-    private boolean canMove(Vektor move, Ball ball, boolean CorrectDiff){
+    private boolean canMove(Vektor move, Ball ball, boolean correctDiff){
 
         Vektor moveCopy = new Vektor(move);
         moveCopy.Add(ball.ball.getMidPoint());
@@ -155,7 +157,7 @@ public class BallPhysic extends Vektor{
             return true;
         else {
 
-            if(CorrectDiff)
+            if(correctDiff)
             {
                 int size = collidateObjects.drawingObjekts.size();
 
