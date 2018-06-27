@@ -22,6 +22,7 @@ public class LabGroup extends DrawingObjektGroup{
 		//LabLevel 1
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 250,midPoint.y + 250), new Vektor(midPoint.x + 250, midPoint.y - 250)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 250,midPoint.y + 250), new Vektor(midPoint.x -200, midPoint.y + 250)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 250,midPoint.y - 250), new Vektor(midPoint.x -250, midPoint.y - 250)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -200, midPoint.y + 250), new Vektor(midPoint.x -200, midPoint.y + 300)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -200, midPoint.y + 300), new Vektor(midPoint.x -250, midPoint.y + 300)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -250, midPoint.y - 250), new Vektor(midPoint.x -250, midPoint.y + 300)));
@@ -36,19 +37,29 @@ public class LabGroup extends DrawingObjektGroup{
 	public void draw(Graphics g) {
 		if(GameKeyListener.isTurnRightPressed())
 			startTurnRight();
+		else
 		if(GameKeyListener.isTurnLeftPressed())
 			startTurnLeft();
+		else {
+			if(DrawingPanel.drawingAngle < 0)
+				DrawingPanel.drawingAngle += 0.003;
+			else if(DrawingPanel.drawingAngle > 0)
+				DrawingPanel.drawingAngle -= 0.003;
+		}
 		super.draw(g);
 
 	}
 
 	public void startTurnRight(){
-	    rotate = +0.001;
-		rotate(rotate, GameFrame.midPoint);
+		if(DrawingPanel.drawingAngle < 0.003)
+	    	DrawingPanel.drawingAngle += 0.003;
+
+		rotate(DrawingPanel.drawingAngle, GameFrame.midPoint);
 	}
 
 	public void startTurnLeft(){
-		rotate = -0.001;
-		rotate(rotate, GameFrame.midPoint);
+		if(DrawingPanel.drawingAngle > -0.003)
+			DrawingPanel.drawingAngle -= 0.003;
+		rotate(DrawingPanel.drawingAngle, GameFrame.midPoint);
 	}
 }

@@ -1,13 +1,13 @@
 package general;
 
-import game.Ball;
+import game.*;
 import game.GameFrame;
 import general.*;
 
 public class BallPhysic extends Vektor{
 
     private boolean bounce = false;
-    final double freeFallSpeed = 0.05;
+    final double freeFallSpeed = 0.02;
     final double frictionValue = 0.00001;
     //constructor
     public BallPhysic(){
@@ -25,22 +25,15 @@ public class BallPhysic extends Vektor{
         boolean canMove = false;
         int curCollObj = 0;
 
-        if(true) {
-            double rotate = 0;
-//            if (GameKeyListener.isTurnRightPressed())
-//                rotate += 0.001;
-//            if (GameKeyListener.isTurnLeftPressed())
-//                rotate -= 0.001;
-            ball.rotate(rotate, GameFrame.midPoint);
-        }
+        ball.rotate(DrawingPanel.drawingAngle, GameFrame.midPoint);
 
         while(!canMove) {
-            //At the first time
             Vektor forceBk = new Vektor(this);
-            if (dir == null && nSize == 0) {
+
+            //Get the correct direction vektor for the current collision object
+            if (nSize == 0) {
                 dir = SetSpeedToDir(new Vektor(0, 1));
-                if(nSize == 0)
-                    bounce = false;
+                bounce = false;
             }else {
                 if (curCollObj < nSize) {
                     dir = getDirVec(curCollObj, collidateObjects, ball);
@@ -49,6 +42,7 @@ public class BallPhysic extends Vektor{
                     break;
                 }
             }
+
             //the difference angle between the current force direction and the new dir vector
             double angleDiffDown = getCrossingAngle(dir);
             Vektor dirUp = new Vektor(-dir.x, -dir.y);
@@ -59,9 +53,9 @@ public class BallPhysic extends Vektor{
             }
 
             double len = getLen();
-            if (nSize > 0 && Math.abs(angleDiff) > 0.0000001 && !bounce && len > 0.2) {
+            if (nSize > 0 && Math.abs(angleDiff) > 0.01 && !bounce && len > 0.01) {
                 boolean goesDown = goesDown();
-                len /= 3;
+                len /= 5;
 
                 LineFunction dirLine = new LineFunction(dir, this);
                 LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(0, 0));
@@ -77,27 +71,25 @@ public class BallPhysic extends Vektor{
                     x = -x;
                     y = -y;
                 }
-
+                System.out.println("bounce");
                 setLen(len);
                 bounce = true;
             } else if (nSize > 0 && goesDown()) {
                 LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(x, y));
                 LineFunction dirLine = new LineFunction(dir, new Vektor(0, 0));
-                len = orthoLine.getCrossingPoint(dirLine).getLen();
+                //len = orthoLine.getCrossingPoint(dirLine).getLen();
 
-                if (dir.y != 0)
+                if (dir.y != 0) {
                     x = dir.x;
+                } else
+                    len = 0;
                 y = dir.y;
 
                 Vektor newVecUp = new Vektor(-x, -y);
-                double testADown = getCrossingAngle(forceBk);
-                double testAUp = newVecUp.getCrossingAngle(forceBk);
-                if(forceBk.isRightOr() != isRightOr() && forceBk.isLeftOr() != isLeftOr())
-                {
-
+                if (forceBk.isRightOr() != isRightOr() && forceBk.isLeftOr() != isLeftOr()) {
                     x = newVecUp.x;
                     y = newVecUp.y;
-                    len -= dir.getLen();
+                    len -= Math.abs(dir.getLen());
                 }
                 setLen(len);
             }
@@ -125,7 +117,7 @@ public class BallPhysic extends Vektor{
                     x = forceBk.x;
                     y = forceBk.y;
                 }
-                System.out.println("kann nicht");
+                //System.out.println("kann nicht");
             }
         }
     }
@@ -175,8 +167,9 @@ public class BallPhysic extends Vektor{
     }
 
     private double getSpeed(double angle){
+        angle = Math.abs(angle);
         if (angle == 0 || angle == Math.PI)
-            return 1;
+            return 0.00000001;
         if(angle > Math.PI / 2) {
 
             if (angle > Math.PI) {

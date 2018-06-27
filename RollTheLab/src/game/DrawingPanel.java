@@ -6,7 +6,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 
-public class DrawingPanel extends JPanel{	
+public class DrawingPanel extends JPanel{
+	public static double drawingAngle = 0;
 	LabGroup drawingObjects;
 	Ball ball;
 	//Constructor
