@@ -29,8 +29,33 @@ public class LabGroup extends DrawingObjektGroup{
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -200, midPoint.y + 300), new Vektor(midPoint.x -250, midPoint.y + 300)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -200, midPoint.y + 300), new Vektor(midPoint.x -250, midPoint.y + 300)));
 		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x -200, midPoint.y + 300), new Vektor(midPoint.x -250, midPoint.y + 300)));
-		//drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 300,midPoint.y + 300), new Vektor(midPoint.x + 300, midPoint.y - 300)));
 
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 210,midPoint.y + 210), new Vektor(midPoint.x + 210, midPoint.y - 250)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 80,midPoint.y + 210), new Vektor(midPoint.x + 210, midPoint.y + 210)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 80,midPoint.y + 210), new Vektor(midPoint.x + 80, midPoint.y + 150)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 40,midPoint.y + 250), new Vektor(midPoint.x + 40, midPoint.y + 150)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 80,midPoint.y + 150), new Vektor(midPoint.x + 170, midPoint.y + 150)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 170,midPoint.y + 170), new Vektor(midPoint.x + 170, midPoint.y + 150)));
+
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x,midPoint.y + 210), new Vektor(midPoint.x, midPoint.y + 150)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x +40,midPoint.y + 150), new Vektor(midPoint.x, midPoint.y + 150)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y - 210), new Vektor(midPoint.x -40, midPoint.y + 250)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 210,midPoint.y + 110), new Vektor(midPoint.x + 170, midPoint.y + 110)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x ,midPoint.y + 110), new Vektor(midPoint.x +130, midPoint.y + 110)));
+
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y + 70), new Vektor(midPoint.x +170, midPoint.y + 70)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x ,midPoint.y + 30), new Vektor(midPoint.x +210, midPoint.y + 30)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y - 10), new Vektor(midPoint.x +170, midPoint.y - 10)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x,midPoint.y - 50), new Vektor(midPoint.x +210, midPoint.y - 50)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y - 90), new Vektor(midPoint.x +170, midPoint.y - 90)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x,midPoint.y - 130), new Vektor(midPoint.x +210, midPoint.y - 130)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y - 170), new Vektor(midPoint.x +170, midPoint.y - 170)));
+		drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x,midPoint.y - 210), new Vektor(midPoint.x +210, midPoint.y - 210)));
+		//drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 170,midPoint.y + 110), new Vektor(midPoint.x + 170, midPoint.y + 110)));
+		//drawingObjekts.add(new DrawingLine(new Vektor(midPoint.x + 300,midPoint.y + 300), new Vektor(midPoint.x + 300, midPoint.y - 300)));
+		DrawingLine bounceLine = new DrawingLine(new Vektor(midPoint.x - 40,midPoint.y - 250), new Vektor(midPoint.x -40, midPoint.y - 210));
+		bounceLine.setBounceActivator(true);
+		drawingObjekts.add(bounceLine);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.awt.*;
 public class DrawingLine extends DrawingObjekt {
 	private Vektor startPoint;
 	private Vektor endPoint;
-
 	
 	public DrawingLine(Vektor startPoint, Vektor endPoint) {
 		this.startPoint = startPoint;
@@ -42,8 +41,6 @@ public class DrawingLine extends DrawingObjekt {
 		{
 			//Convert to Arc
 			DrawingArc checkArc = (DrawingArc) check;
-			if(checkArc.getMidPoint().minusVec(startPoint).getLen() <= checkArc.getRadius() || checkArc.getMidPoint().minusVec(endPoint).getLen() <= checkArc.getRadius())
-				return true;
 			LineFunction lineThis = new LineFunction(endPoint.minusVec(startPoint), startPoint);
 			LineFunction thisOrtho = new LineFunction(endPoint.minusVec(startPoint).getOrtho(), checkArc.getMidPoint());
 
@@ -64,8 +61,9 @@ public class DrawingLine extends DrawingObjekt {
 			moveOnLine = midToPoint;
 			if( lenStartToEnd  >= endToPoint.getLen() && lenStartToEnd >= startToPoint.getLen() && collisionDifValue <= 0.00) {
 				if(onlyCrossing)
-					if(collisionDifValue < 0.0)
+					if(collisionDifValue < 0.0) {
 						return true;
+					}
 					else
 						return false;
 				return true;

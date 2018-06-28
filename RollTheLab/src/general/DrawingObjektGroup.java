@@ -14,11 +14,12 @@ public class DrawingObjektGroup {
 		for(int i = 0; i < length; i++)
 		{
 			DrawingObjekt curObj = drawingObjekts.get(i);
-			curObj.draw(g);
+			if (!curObj.isBounceActivator())
+				curObj.draw(g);
 		}
 	}
 	
-	public DrawingObjektGroup getCollidateObjekts(DrawingObjekt checkObj, boolean onlyCrossing)
+	public DrawingObjektGroup getCollidateObjekts(DrawingObjekt checkObj, boolean onlyCrossing, boolean withBounceChange)
 	{
 		int length = drawingObjekts.size();
 		DrawingObjektGroup collidateGroup = new DrawingObjektGroup();
@@ -26,7 +27,11 @@ public class DrawingObjektGroup {
 		{
 			DrawingObjekt curObj = drawingObjekts.get(i);
 			if(curObj.checkCollision(checkObj, onlyCrossing)) {
-				collidateGroup.drawingObjekts.add(curObj);
+				if(curObj.isBounceActivator()) {
+					if (withBounceChange)
+						collidateGroup.drawingObjekts.add(curObj);
+				}else
+					collidateGroup.drawingObjekts.add(curObj);
 			}
 		}
 		return collidateGroup;
@@ -37,4 +42,5 @@ public class DrawingObjektGroup {
 		for(int i = 0; i < length; i++)
 			drawingObjekts.get(i).rotate(angle, midPoint);
 	}
+
 }

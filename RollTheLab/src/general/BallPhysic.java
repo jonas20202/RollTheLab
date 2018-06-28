@@ -9,6 +9,8 @@ public class BallPhysic extends Vektor{
     private boolean bounce = false;
     final double freeFallSpeed = 0.02;
     final double frictionValue = 0.00001;
+    private double bounceSpeedDiv = 3;
+    private boolean inBounceChange = false;
     //constructor
     public BallPhysic(){
         super(0, 0.001);
@@ -18,14 +20,34 @@ public class BallPhysic extends Vektor{
     //and the current force vector
     public void RecalkPhysic(Ball ball){
         canMove(new Vektor(0,0), ball, true);
-        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false);
+        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false, true);
         int nSize = collidateObjects.drawingObjekts.size();
+
+        boolean bounceChange = false;
+        for(int i = 0; i < nSize; i++){
+            DrawingObjekt curColl = collidateObjects.drawingObjekts.get(i);
+            if(curColl.isBounceActivator()) {
+                collidateObjects.drawingObjekts.remove(curColl);
+                nSize--;
+                bounceChange = true;
+            }
+
+
+        }
+        if(bounceChange == false)
+        {
+            if(inBounceChange == true)
+                if(bounceSpeedDiv == 3)
+                    bounceSpeedDiv = 1;
+        }
+        inBounceChange = bounceChange;
 
         Vektor dir = null;
         boolean canMove = false;
         int curCollObj = 0;
 
-        ball.rotate(DrawingPanel.drawingAngle, GameFrame.midPoint);
+        //if(nSize > 0)
+            ball.rotate(DrawingPanel.drawingAngle, GameFrame.midPoint);
 
         while(!canMove) {
             Vektor forceBk = new Vektor(this);
@@ -55,7 +77,7 @@ public class BallPhysic extends Vektor{
             double len = getLen();
             if (nSize > 0 && Math.abs(angleDiff) > 0.01 && !bounce && len > 0.01) {
                 boolean goesDown = goesDown();
-                len /= 5;
+                len /= bounceSpeedDiv;
 
                 LineFunction dirLine = new LineFunction(dir, this);
                 LineFunction orthoLine = new LineFunction(dir.getOrtho(), new Vektor(0, 0));
@@ -71,7 +93,6 @@ public class BallPhysic extends Vektor{
                     x = -x;
                     y = -y;
                 }
-                System.out.println("bounce");
                 setLen(len);
                 bounce = true;
             } else if (nSize > 0 && goesDown()) {
@@ -143,7 +164,7 @@ public class BallPhysic extends Vektor{
         moveCopy.Add(ball.ball.getMidPoint());
 
         DrawingArc movedBall = new DrawingArc(moveCopy, ball.ball.getRadius(), 0,360);
-        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(movedBall, true);
+        DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(movedBall, true, false);
 
         if(collidateObjects.drawingObjekts.size() == 0)
             return true;
@@ -157,7 +178,7 @@ public class BallPhysic extends Vektor{
 
                     Vektor moveVec = collidateObjects.drawingObjekts.get(0).getMoveOnLineVec();
                     ball.ball.move(moveVec);
-                    collidateObjects = ball.lab.getCollidateObjekts(ball.ball, true);
+                    collidateObjects = ball.lab.getCollidateObjekts(ball.ball, true, false);
 
                 }
             }
