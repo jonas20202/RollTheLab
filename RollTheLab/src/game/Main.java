@@ -1,6 +1,6 @@
 package game;
 
-import general.Vektor;
+import game.gui.GameFrame;
 
 public class Main extends Thread{
 

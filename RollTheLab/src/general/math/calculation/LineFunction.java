@@ -1,4 +1,4 @@
-package general;
+package general.math.calculation;
 
 public class LineFunction {
     private double m = 0;

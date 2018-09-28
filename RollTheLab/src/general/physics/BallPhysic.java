@@ -1,31 +1,36 @@
-package general;
+package general.physics;
 
-import game.*;
-import game.GameFrame;
-import general.*;
+import drawingObjects.Ball;
+import drawingObjects.general.DrawingObject;
+import drawingObjects.general.DrawingObjektGroup;
+import game.gui.GameFrame;
+import game.gui.DrawingPanel;
+import general.math.calculation.LineFunction;
+import general.math.calculation.Vektor;
 
-public class BallPhysic extends Vektor{
+public class BallPhysic extends Vektor {
+    //private boolean bounce = false;
+    //private double bounceSpeedDiv = 3;
+    //private boolean inBounceChange = false;
 
-    private boolean bounce = false;
-    final double freeFallSpeed = 0.02;
-    final double frictionValue = 0.00001;
-    private double bounceSpeedDiv = 3;
-    private boolean inBounceChange = false;
+    private static double freeFallSpeed = 0.05;
+    private static Vektor gravityStrength = new Vektor(0, freeFallSpeed);
+
     //constructor
     public BallPhysic(){
-        super(0, 0.001);
+        super(0, 0);
     }
 
-    //Recalks the force vector with the current collision Objects
-    //and the current force vector
-    public void RecalkPhysic(Ball ball){
+    //Berechnet die Physik anhand des übergebenen Balles neu
+    public void RecalkPhysicWithBall(Ball ball){
+
         canMove(new Vektor(0,0), ball, true);
         DrawingObjektGroup collidateObjects = ball.lab.getCollidateObjekts(ball.ball, false, true);
         int nSize = collidateObjects.drawingObjekts.size();
 
         boolean bounceChange = false;
         for(int i = 0; i < nSize; i++){
-            DrawingObjekt curColl = collidateObjects.drawingObjekts.get(i);
+            DrawingObject curColl = collidateObjects.drawingObjekts.get(i);
             if(curColl.isBounceActivator()) {
                 collidateObjects.drawingObjekts.remove(curColl);
                 nSize--;
@@ -143,10 +148,11 @@ public class BallPhysic extends Vektor{
         }
     }
 
+
     private Vektor getDirVec(int i, DrawingObjektGroup collidateObjects, Ball ball){
         Vektor dir = null;
         //gets the current object from the collision objects
-        DrawingObjekt curCollObj = curCollObj = collidateObjects.drawingObjekts.get(i);
+        DrawingObject curCollObj = curCollObj = collidateObjects.drawingObjekts.get(i);
 
         //sets the dir vector with the direction of the collision object
         dir = curCollObj.getMoveVek(ball.ball.getMidPoint());

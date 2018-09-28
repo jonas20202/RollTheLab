@@ -3,15 +3,16 @@ package labImport;
 import general.List;
 import general.List.ListEl;
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class ImageLine {
 	private ImagePoint startPoint;
 	private ImagePoint endPoint;
-	private List<ImagePoint> pointList = null;
+	private ArrayList<ImagePoint> pointList = null;
 	
-	public ImageLine(List<ImagePoint> pointList)
+	public ImageLine(ArrayList<ImagePoint> pointList)
 	{
-		this(pointList.getFirst().element, pointList.getLast().element);
+		this(pointList.get(0), pointList.get(pointList).getLast().element);
 		this.pointList = pointList;	
 	}
 	

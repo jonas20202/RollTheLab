@@ -1,4 +1,4 @@
-package general;
+package game.gui;
 
 public class GameKeyListener {
 	public static volatile boolean isTurnRightPressed = false;
